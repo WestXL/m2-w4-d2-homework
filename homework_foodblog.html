@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <title>Food Blog</title>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1.0">
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+        <link rel="preconnect"
+              href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap"
+              rel="stylesheet">
+        <style>
+            * {
+                font-family: Arial, Helvetica, sans-serif;
+            }
+
+            #leftside {
+                float: left;
+                width: 30%;
+                min-height: 1200px;
+                background-color: rgb(77, 192, 154);
+            }
+
+            #rightside {
+                float: left;
+                width: 70%;
+                min-height: 1200px;
+                background-color: rgb(238, 226, 192);
+                position: relative;
+            }
+
+            #container {
+                background-color: rgba(255, 255, 255, 0.85);
+                position: absolute;
+                top: 15%;
+                left: 15%;
+                min-width: 1100px;
+                min-height: 1050px;
+                border-radius: 0.7em;
+            }
+
+            header {
+                height: 50px;
+                background-color: rgba(231, 229, 229, 0.5);
+                font-size: 2.75em;
+                padding: 0.5em;
+                color: rgb(216, 150, 7);
+            }
+
+            header span {
+                font-family: 'Sacramento', cursive;
+            }
+
+            main {
+                position: relative;
+            }
+
+            main h2 {
+                position: absolute;
+                left: 20%;
+                top: 30px;
+                margin: 25px 0 200px 50px;
+                color: rgb(60, 190, 160);
+                text-transform: uppercase;
+            }
+
+            main #photos img {
+                margin: 0.75em;
+                border: 0.85em solid rgb(255, 255, 255);
+            }
+
+            section#blogposts {
+                position: absolute;
+                left: 20%;
+                top: 70px;
+                padding: 50px;
+            }
+
+            main .post {
+                margin: 25px;
+                padding: 25px;
+                border: 2px solid rgba(83, 78, 58, 0.6);
+                border-radius: 0.5em;
+            }
+
+            footer {
+                position: absolute;
+                bottom: 0;
+                height: 50px;
+                width: 100%;
+                text-align: center;
+                font-size: 0.85em;
+            }
+
+            #blogposts img {
+                width: 40px;
+                height: 35px;
+                vertical-align: middle;
+                margin-right: 1em;
+                cursor: pointer;
+            }
+
+            #blogposts li {
+                border-radius: 1em;
+                border: 1.5px solid gray;
+                margin-bottom: 2em;
+                padding: 1em;
+            }
+
+            #overlay {
+                position: fixed;
+                display: none;
+                width: 30%;
+                height: 50%;
+                margin: auto;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                border-radius: 10px 140px 30px 140px;
+                background-color: rgba(119, 82, 0, 0.7);
+            }
+
+            #text h4 {
+                position: relative;
+                font-size: 30px;
+                margin: 2em;
+                color: white;
+                font-weight: bolder;
+            }
+
+            #text p {
+                font-weight: lighter;
+                position: relative;
+                font-size: 15px;
+                color: white;
+                margin-left: 4em;
+                margin-right: 4em;
+            }
+
+            #closeBtn {
+                opacity: 1;
+                font-size: 20px;
+            }
+
+            #closeBtn:hover {
+                background-color: black;
+                transition: 1s;
+                font-size: 25px;
+                cursor: pointer;
+            }
+
+            .close {
+                float: right;
+                margin: 2em;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <aside id="leftside"></aside>
+        <aside id="rightside"></aside>
+        <div id="container">
+            <header id="component1">
+                <mycomponent1></mycomponent1>
+            </header>
+            <main>
+                <aside id="photos">
+                    <img v-bind:src="source"
+                         alt="White Chicken Chili"
+                         width="180">
+                </aside>
+                <div id="component2">
+                    <mycomponent2>
+                    </mycomponent2>
+                </div>
+                <section id="blogposts">
+                    <ul>
+                        <li v-for="(c, i) in comments"
+                            style="list-style: none">
+                            <img v-bind:src="c.profile"
+                                 v-on:click="showProfile(i)"> {{ c.name }} — {{ c.time }} <div
+                                 v-html="c.comment">
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+                <div id="overlay">
+                    <div id="text">
+                    </div>
+                    <button onclick="modalOff()"
+                            class="close">x</button>
+                </div>
+            </main>
+            <footer> &copy; Copyright FOOD BLOG </footer>
+        </div>
+        <script>
+            new Vue({
+                el: '#photos',
+                data: {
+                    source: "/images/chili.jpg"
+                }
+            });
+            Vue.component('mycomponent1', {
+                template: '<span>Food Blog</span>'
+            });
+            Vue.component('mycomponent2', {
+                template: '<h2>Comments</h2>'
+            });
+            new Vue({
+                el: '#component1'
+            });
+            new Vue({
+                el: '#component2'
+            });
+            new Vue({
+                el: '#blogposts',
+                data: {
+                    comments: [
+                        {
+                            profile: 'profile.png',
+                            name: 'Brianna',
+                            time: 'February 18, 2021 @ 3:30 pm',
+                            commentType: 'REPLY',
+                            comment: '<p>Was amazing! My Walmart didn’t have coriander in stock and didn’t have ground cumin. I used serrano instead of jalapeño. It was just like my favorite tortilla soup from BJs. I am sending this recipe to my family. I want everyone to try it!</p>',
+                            FoodieLevel: 'Novice',
+                            Bio: 'Food enthusiast. Love to cook and experiment.Into only organic, fat free, sugar free stuffs!',
+                            show: true,
+                        }, {
+                            profile: 'profile.png',
+                            name: 'LINH',
+                            time: 'February 15, 2021 @ 9:46 am',
+                            commentType: 'REPLY',
+                            comment: '<p>I just made this soup today and it’s so tasty! didn’t have corn at home but still turned out very good.  It’s a winner!  I made beef chili for my parents; but since my dad has gout he can’t eat beef; this white chicken chili is perfect for him.  Thank you Lisa!</p>',
+                            FoodieLevel: 'Newcomer',
+                            Bio: 'Love food! Grew up with meat and potatoes. Recently venture outside my comfort zone. Loving everything I have been eating so far. Thai is my favorite at this time.',
+                            show: true,
+                        }, {
+                            profile: 'profile.png',
+                            name: 'CATHERINE LEONARDO',
+                            time: 'February 13, 2021 @ 12:58 pm',
+                            commentType: 'REPLY',
+                            comment: '<p>I LOVE this White Chicken Chili! You are right, it is satiating meal—delicious with toasted bread. Refreshingly different taste than any chicken chili I’ve made in the past. I made it exactly as written and added some chopped zucchini, carrots, and celery. Instead of shredding the chicken, I chopped it into small pieces. It freezes very well. Will be an all-time favorite, for sure.</p>',
+                            FoodieLevel: 'Mentor',
+                            Bio: 'I have to say I never was the adventurous type until 2 years ago. My boyfriend, who is of Japanese background, exposed me to other cultural food and I have never look back since!',
+                            show: true,
+                        }, {
+                            profile: 'profile.png',
+                            name: 'KALI',
+                            time: 'February 13, 2021 @ 11:31 am',
+                            commentType: 'REPLY',
+                            comment: '<p>his recipe is dynamite! My partner usually won’t eat beans but he finished the whole pot (darn was hoping to have some for leftovers haha). This is crowd-pleaser that I am going to add to my regular recipe rotation. Thanks so much, Lisa!</p>',
+                            FoodieLevel: 'Novice',
+                            Bio: "Food is my passion. So is cooking. I love to experiment and try new things. I have to admit I'm a food whore! Invite me over for dinner and I'll be there!",
+                            show: true,
+                        }]
+                },
+                methods: {
+                    showProfile: function (index) {
+                        console.log(this.comments[index].comment);
+                        var name = this.comments[index].name;
+                        var level = this.comments[index].FoodieLevel;
+                        var bio = this.comments[index].Bio;
+                        modalOn(name, level, bio);
+                    }
+                },
+            });
+
+            function modalOn(name, level, bio) {
+                document.getElementById("overlay").style.display = "block";
+                document.getElementById("text").innerHTML = "<h4>" + name + "</h4>" + "<p><b>Foodie Level: </b>" + level + "</p>" + "<p><b>Bio: </b>" + bio + "</p>";
+            }
+
+            function modalOff() {
+                document.getElementById("overlay").style.display = "none";
+            }
+        </script>
+        <!-- Bootstrap jQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <!-- Bootstrap Popper -->
+        <script
+                src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <!-- Bootstrap JS -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </body>
+
+</html>
